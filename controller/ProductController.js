@@ -123,9 +123,18 @@ async index(req, res) {
   async show(req, res) {
     try {
       const { id } = req.params;
-      const data = await Product.findById(id).select(
-        "-_id"
-      );
+
+      console.log(id)
+      const data = await Product.findById(id).populate({
+        path: 'reviews',
+        model: 'Review',
+        select: '-_id -createdAt -updatedAt -__v',
+        populate: {
+          path: 'user',
+          model: 'User',
+          select: '-_id -role -createdAt -updatedAt -__v',
+        },
+      });
       if (data) {
         return res.status(200).json(success("Data Has Found", data));
       } else {
@@ -240,6 +249,12 @@ async index(req, res) {
       res.status(500).json(failure("Internal Server Error"));
     }
   }
+
+
+
+
+
+
 
   show_order = asyncHandler(async (req, res) => {
     try {

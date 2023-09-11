@@ -4,6 +4,7 @@ const slug = require('slug');
 
 const ProductSchema = new mongoose.Schema(
   {
+    _id :{ type: mongoose.Schema.Types.ObjectId},
     name: { type: String, required: [true, "Name must not be emtpy"] },
     slug: { type: String, lowercase: true, unique: true, required: true },
     price: { type: Number, required: true },
@@ -38,6 +39,15 @@ ProductSchema.methods.slugify = function () {
 ProductSchema.query.bySlug = function (slug) {
     return this.where({ slug: slug }).select("name price description slug -_id");
 };
+
+ProductSchema.virtual('reviews', {
+  ref: 'Review', // Reference to the Review model
+  localField: '_id', // Field in the Product model that holds the reference
+  foreignField: 'product', // Field in the Review model that references the product
+});
+
+ProductSchema.set('toObject', { virtuals: true });
+ProductSchema.set('toJSON', { virtuals: true });
 
 
 

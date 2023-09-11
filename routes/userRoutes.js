@@ -4,5 +4,6 @@ const UserController = require("../controller/UserController");
 const isUser = require("../middleware/isUser");
 
 router.get("/profile", isUser, UserController.profile);
+router.get("/add-review", isUser, UserController.add_review);
 
 module.exports = router;

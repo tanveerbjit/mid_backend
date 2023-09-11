@@ -60,7 +60,7 @@ class AuthController {
 
       // compare password with hashedpassword
       if (auth && (await bcrypt.compare(password, auth.password))) {
-        const {role, email, _id } = auth;
+        const {role, email, _id} = auth;
 
         const accessToken = jwt.sign(
           {
